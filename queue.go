@@ -29,6 +29,24 @@ func (p *queue) enqueue(name string) error {
 	return nil
 }
 
+func (p *queue) dequeue() (string, error)  {
+	var item string
+
+	if p.front == nil { //check if empty queue
+		return "", errors.New("empty queue")
+	}
+
+	item = p.front.item
+	if p.size == 1 {
+		p.front = nil
+		p.back = nil
+	} else {
+		p.front = p.front.next
+	}
+	p.size--
+	return item, nil
+}
+
 func (p *queue) printAllNodes() (int, error) {
 	var count int = 0
 	currentNode := p.front
@@ -59,6 +77,11 @@ func main() {
 	myQueue.enqueue("fred")
 
 	fmt.Println(myQueue.getSize())
+
+	fmt.Println("Showing all nodes in queue..")
+	myQueue.printAllNodes()
+
+	myQueue.dequeue()
 
 	fmt.Println("Showing all nodes in queue..")
 	myQueue.printAllNodes()
